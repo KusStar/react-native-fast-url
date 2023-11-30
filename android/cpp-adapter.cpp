@@ -1,5 +1,5 @@
 #include <jni.h>
-#include "react-native-fast-url.h"
+#include "fast-url.h"
 
 extern "C"
 JNIEXPORT jdouble JNICALL

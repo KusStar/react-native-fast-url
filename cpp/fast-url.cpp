@@ -1,4 +1,4 @@
-#include "react-native-fast-url.h"
+#include "fast-url.h"
 
 namespace fasturl {
 	double multiply(double a, double b) {

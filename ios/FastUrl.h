@@ -1,5 +1,5 @@
 #ifdef __cplusplus
-#import "react-native-fast-url.h"
+#import "fast-url.h"
 #endif
 
 #ifdef RCT_NEW_ARCH_ENABLED
