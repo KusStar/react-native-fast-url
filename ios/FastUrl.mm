@@ -1,18 +1,34 @@
 #import "FastUrl.h"
 
+#import <React/RCTBridge+Private.h>
+#import <React/RCTUtils.h>
+#import <jsi/jsi.h>
+#import "../cpp/fast-url.h"
+
 @implementation FastUrl
-RCT_EXPORT_MODULE()
+RCT_EXPORT_MODULE(FastUrl)
 
-// Example method
-// See // https://reactnative.dev/docs/native-modules-ios
-RCT_EXPORT_METHOD(multiply:(double)a
-                  b:(double)b
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
-{
-    NSNumber *result = @(fasturl::multiply(a, b));
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
+    NSLog(@"Initializing FastUrl module...");
 
-    resolve(result);
+    RCTBridge *bridge = [RCTBridge currentBridge];
+    RCTCxxBridge *cxxBridge = (RCTCxxBridge *)bridge;
+    if (cxxBridge == nil) {
+        return @false;
+    }
+
+    using namespace facebook;
+
+    auto jsiRuntime = (jsi::Runtime *)cxxBridge.runtime;
+    if (jsiRuntime == nil) {
+        return @false;
+    }
+    auto &runtime = *jsiRuntime;
+
+    fasturl::install(runtime);
+
+    NSLog(@"FastUrl initialized");
+    return @true;
 }
 
 
