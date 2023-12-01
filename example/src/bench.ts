@@ -14,7 +14,7 @@ const bench = (tag: string, fn: () => void) => {
 export const startBench = () => {
   const result = [];
   const url = 'https://example.com?a=1&b=2&c=3';
-  for (const loop of [100, 1000, 10000]) {
+  for (const loop of [100, 1000, 10000, 100000]) {
     global.gc?.();
 
     const b2 = bench('fast URL x' + loop, () => {
