@@ -2,17 +2,12 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import FastUrl from 'react-native-fast-url';
-
-const pretty = (obj: any) => JSON.stringify(obj, null, 2);
+import { URL } from 'react-native-fast-url';
 
 export default function App() {
   React.useEffect(() => {
-    console.log(
-      'URL("https://google.com")',
-      pretty(FastUrl.URL('https://google.com?a=1&b=2'))
-    );
-    const params = FastUrl.URLSearchParams("a=1&b=2")
+    const url = new URL('https://google.com?a=1&b=2');
+    const params = url.searchParams
     console.log(
       'URLSearchParams("a=1&b=2")',
       '\n',

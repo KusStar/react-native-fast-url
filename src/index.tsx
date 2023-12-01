@@ -56,7 +56,6 @@ type FastUrlNative = {
     port: string;
     pathname: string;
     search: string;
-    searchParams: FastUrlNative['URLSearchParams'];
     hash: string;
   };
 };
@@ -65,5 +64,125 @@ const FastUrlModule: FastUrlNative = {
   URL: global.__FastUrl!.URL,
   URLSearchParams: global.__FastUrl!.URLSearchParams,
 };
+
+export class URLSearchParams {
+  private _urlSearchParams: ReturnType<FastUrlNative['URLSearchParams']>;
+
+  constructor(url: string) {
+    this._urlSearchParams = FastUrlModule.URLSearchParams(url);
+  }
+
+  append(key: string, value: string) {
+    this._urlSearchParams.append(key, value);
+  }
+
+  delete(key: string) {
+    this._urlSearchParams.delete(key);
+  }
+
+  entries() {
+    return this._urlSearchParams.entries();
+  }
+
+  forEach(callback: (value: string, key: string) => void) {
+    return this._urlSearchParams.forEach(callback);
+  }
+
+  get(key: string) {
+    return this._urlSearchParams.get(key);
+  }
+
+  getAll(key: string) {
+    return this._urlSearchParams.getAll(key);
+  }
+
+  has(key: string) {
+    return this._urlSearchParams.has(key);
+  }
+
+  keys() {
+    return this._urlSearchParams.keys();
+  }
+
+  set(key: string, value: string) {
+    return this._urlSearchParams.set(key, value);
+  }
+
+  get size() {
+    return this._urlSearchParams.size;
+  }
+
+  sort() {
+    return this._urlSearchParams.sort();
+  }
+
+  values() {
+    return this._urlSearchParams.values();
+  }
+
+  toString() {
+    return this._urlSearchParams.toString();
+  }
+}
+
+export class URL {
+  private _url: ReturnType<FastUrlNative['URL']>;
+
+  constructor(url: string) {
+    this._url = FastUrlModule.URL(url);
+  }
+
+  get href() {
+    return this._url.href;
+  }
+
+  get origin() {
+    return this._url.origin;
+  }
+
+  get protocol() {
+    return this._url.protocol;
+  }
+
+  get username() {
+    return this._url.username;
+  }
+
+  get password() {
+    return this._url.password;
+  }
+
+  get host() {
+    return this._url.host;
+  }
+
+  get hostname() {
+    return this._url.hostname;
+  }
+
+  get port() {
+    return this._url.port;
+  }
+
+  get pathname() {
+    return this._url.pathname;
+  }
+
+  get search() {
+    return this._url.search;
+  }
+
+  get searchParams() {
+    return new URLSearchParams(this._url.search);
+  }
+
+  get hash() {
+    return this._url.hash;
+  }
+
+  toJSON() {
+    return this._url.href;
+  }
+}
 
 export default FastUrlModule;

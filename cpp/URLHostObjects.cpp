@@ -262,7 +262,6 @@ namespace fasturl {
         keys.push_back(jsi::PropNameID::forAscii(rt, "port"));
         keys.push_back(jsi::PropNameID::forAscii(rt, "pathname"));
         keys.push_back(jsi::PropNameID::forAscii(rt, "search"));
-        keys.push_back(jsi::PropNameID::forAscii(rt, "searchParams"));
         keys.push_back(jsi::PropNameID::forAscii(rt, "hash"));
         keys.push_back(jsi::PropNameID::forAscii(rt, "toString"));
         return keys;
@@ -310,13 +309,6 @@ namespace fasturl {
         if (key == "search") {
             return jsi::String::createFromUtf8(rt,
                                                std::string(_url.get_search()));
-        }
-        if (key == "searchParams") {
-            ada::url_search_params params(_url.get_search());
-
-            return jsi::Object::createFromHostObject(
-                rt, std::make_shared<URLSearchParamsHostObject>(
-                        URLSearchParamsHostObject(params)));
         }
         if (key == "hash") {
             return jsi::String::createFromUtf8(rt,
