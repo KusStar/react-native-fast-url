@@ -25,7 +25,7 @@ Run on M1 Pro Mac Catalyst, React Native 0.67.6
 
 ## Usage
 
-### Polyfill
+Import the polyfill in your entry file:
 
 ```js
 // index.js
