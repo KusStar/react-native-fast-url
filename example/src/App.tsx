@@ -1,18 +1,40 @@
+/* eslint-disable prettier/prettier */
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-fast-url';
+import FastUrl from 'react-native-fast-url';
+
+const pretty = (obj: any) => JSON.stringify(obj, null, 2);
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
   React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+    console.log(
+      'URL("https://google.com")',
+      pretty(FastUrl.URL('https://google.com?a=1&b=2'))
+    );
+    const params = FastUrl.URLSearchParams("a=1&b=2")
+    console.log(
+      'URLSearchParams("a=1&b=2")',
+      '\n',
+      params,
+      '\n size',
+      params.size,
+      '\n get a',
+      params.get('a'),
+      '\n entris',
+      params.entries(),
+      '\n keys:',
+      params.keys(),
+      '\n values:',
+      params.values(),
+      '\n toString',
+      params.toString(),
+    );
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Hello World</Text>
     </View>
   );
 }
