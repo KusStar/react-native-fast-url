@@ -15,13 +15,15 @@ yarn add react-native-fast-url
 
 Compared to [react-native-url-polyfill](https://github.com/charpeni/react-native-url-polyfill/tree/main).
 
-Run on M1 Pro Mac Catalyst, React Native 0.67.6
+Run on M1 Pro Mac Catalyst, React Native v0.72.7.
 
 |                           | loop 100        | loop 1000       | loop 10000      | loop 100000     |
 |---------------------------|------------|------------|------------|------------|
 | react-native-url-polyfill | 22ms       | 125ms      | 1225ms     | 12438ms    |
 | react-native-fast-url     | 2ms        | 4ms        | 35ms       | 361ms      |
 | fast-url is               | 12x faster | 35x faster | 36x faster | 34x faster |
+
+Benchmark code in example: [bench.ts](./example/src/bench.ts)
 
 ## Usage
 
