@@ -213,4 +213,9 @@ export class URL {
   }
 }
 
+export function setupPolyfill() {
+  (globalThis as any).URL = URL;
+  (globalThis as any).URLSearchParams = URLSearchParams;
+}
+
 export default FastUrlModule;
