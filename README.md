@@ -1,8 +1,8 @@
 # react-native-fast-url
 
-Fast URL, URLSearchParams Polyfill for React Native.
+A Fast URL and URLSearchParams Polyfills for React Native.
 
-Built in JSI and use [ada](https://github.com/ada-url/ada) as URL parser for best performance.
+Built in JSI and use [ada](https://github.com/ada-url/ada), the URL parser used in Node.js since  v18.16 for the best performance.
 
 ## Installation
 
