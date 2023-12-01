@@ -1,4 +1,15 @@
-import { NativeModules, Platform } from 'react-native';
+import { Platform, NativeModules } from 'react-native';
+
+let BLOB_URL_PREFIX: any = null;
+
+const { BlobModule } = NativeModules;
+
+if (BlobModule && typeof BlobModule.BLOB_URI_SCHEME === 'string') {
+  BLOB_URL_PREFIX = BlobModule.BLOB_URI_SCHEME + ':';
+  if (typeof BlobModule.BLOB_URI_HOST === 'string') {
+    BLOB_URL_PREFIX += `//${BlobModule.BLOB_URI_HOST}/`;
+  }
+}
 
 declare global {
   var __FastUrl: any | undefined;
@@ -44,6 +55,7 @@ type FastUrlNative = {
     size: number;
     sort: () => void;
     values: () => IterableIterator<string>;
+    toStirng(): () => string;
   };
   URL: (url: string) => {
     href: string;
@@ -57,6 +69,7 @@ type FastUrlNative = {
     pathname: string;
     search: string;
     hash: string;
+    toStirng(): () => string;
   };
 };
 
@@ -128,6 +141,17 @@ export class URLSearchParams {
 export class URL {
   private _url: ReturnType<FastUrlNative['URL']>;
 
+  static createObjectURL(blob: any) {
+    if (BLOB_URL_PREFIX === null) {
+      throw new Error('Cannot create URL for blob!');
+    }
+    return `${BLOB_URL_PREFIX}${blob.data.blobId}?offset=${blob.data.offset}&size=${blob.size}`;
+  }
+
+  static revokeObjectURL(_url: string) {
+    // Do nothing.
+  }
+
   constructor(url: string) {
     this._url = FastUrlModule.URL(url);
   }
@@ -178,6 +202,10 @@ export class URL {
 
   get hash() {
     return this._url.hash;
+  }
+
+  toString() {
+    return this._url.toString();
   }
 
   toJSON() {

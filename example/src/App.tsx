@@ -1,35 +1,38 @@
 /* eslint-disable prettier/prettier */
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { URL } from 'react-native-fast-url';
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
+import { startBench } from './bench';
 
 export default function App() {
+  const [result, setResult] = React.useState<{
+    b1: number;
+    b2: number;
+    loop: number;
+  }[]>();
   React.useEffect(() => {
-    const url = new URL('https://google.com?a=1&b=2');
-    const params = url.searchParams
-    console.log(
-      'URLSearchParams("a=1&b=2")',
-      '\n',
-      params,
-      '\n size',
-      params.size,
-      '\n get a',
-      params.get('a'),
-      '\n entris',
-      params.entries(),
-      '\n keys:',
-      params.keys(),
-      '\n values:',
-      params.values(),
-      '\n toString',
-      params.toString(),
-    );
+    setTimeout(() => {
+      setResult(startBench());
+    }, 100)
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Hello World</Text>
+      {
+        result ? result.map((it, index) =>
+          <View key={index} style={{ marginBottom: 32 }}>
+            <Text>LOOP: {it.loop}</Text>
+            <Text>polyfill URL: {it.b1.toFixed(2)}ms</Text>
+            <Text>FastUrl: {it.b2.toFixed(2)}ms</Text>
+            <Text>FastUrl is {(it.b1 / it.b2).toFixed(2)}x faster</Text>
+          </View>
+        )
+          :
+          <View>
+            <ActivityIndicator size={64} />
+            <Text>Running benchmark...</Text>
+          </View>
+      }
     </View>
   );
 }
