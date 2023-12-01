@@ -1,8 +1,10 @@
-#ifndef FASTURLPARSER_H
-#define FASTURLPARSER_H
+#ifndef FASTURL_H
+#define FASTURL_H
+
+#include "utils.h"
 
 namespace fasturl {
-  double multiply(double a, double b);
+    void install(facebook::jsi::Runtime &runtime);
 }
 
 #endif /* FASTURLPARSER_H */

@@ -1,6 +1,7 @@
 package com.fasturl;
 
 import androidx.annotation.NonNull;
+import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -22,16 +23,15 @@ public class FastUrlModule extends ReactContextBaseJavaModule {
     return NAME;
   }
 
-  static {
-    System.loadLibrary("cpp");
-  }
-
-  private static native double nativeMultiply(double a, double b);
-
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
-  @ReactMethod
-  public void multiply(double a, double b, Promise promise) {
-    promise.resolve(nativeMultiply(a, b));
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  public boolean install() {
+    try {
+      System.loadLibrary("fast-url");
+      FastUrlBridge.instance.install(getReactApplicationContext());
+      return true;
+    } catch (Exception exception) {
+      Log.e(NAME, "Failed to install JSI Bindings!", exception);
+      return false;
+    }
   }
 }

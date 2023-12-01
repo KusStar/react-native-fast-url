@@ -9,7 +9,7 @@ set(BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
 # Specifies a path to native header files.
 include_directories(../cpp)
 
-add_library(${PACKAGE_NAME} SHARED ../cpp/fast-url.cpp cpp-adapter.cpp)
+add_library(${PACKAGE_NAME} SHARED ../cpp/fast-url.cpp ../cpp/ada.cpp ../cpp/URLHostObjects.cpp cpp-adapter.cpp )
 
 set_target_properties(
   ${PACKAGE_NAME}
