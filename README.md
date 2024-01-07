@@ -2,7 +2,7 @@
 
 A Fast URL and URLSearchParams Polyfills for React Native.
 
-Built in JSI and use [ada](https://github.com/ada-url/ada), the URL parser used in Node.js since  v18.16 for the best performance.
+Built in JSI and [ada](https://github.com/ada-url/ada), a WHATWG-compliant and fast URL parser adopted in Node.js since v18.16 for the best performance.
 
 ## Installation
 
@@ -24,6 +24,8 @@ Run on M1 Pro Mac Catalyst, React Native v0.72.7.
 | fast-url is               | 12x faster | 35x faster | 36x faster | 34x faster |
 
 Benchmark code in example: [bench.ts](./example/src/bench.ts)
+
+This library(Ada) significantly outperforms react-native-url-polyfill in terms of speed, fully embracing the WHATWG URL standard and Unicode Standards. However, it's essential to note that Ada's bundle size is larger compared to react-native-url-polyfill. The binary size of the Ada C++ library is approximately 500KB, while react-native-url-polyfill is a more compact 73.67KB. The choice between the two should be based on your specific requirements and preferences.
 
 ## Usage
 
