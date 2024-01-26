@@ -13,9 +13,9 @@ namespace fasturl {
         URLSearchParamsHostObject(ada::url_search_params params)
             : _params(params){};
 
-        std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime &rt);
+        std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime &rt) override;
 
-        jsi::Value get(jsi::Runtime &rt, const jsi::PropNameID &propNameID);
+        jsi::Value get(jsi::Runtime &rt, const jsi::PropNameID &propNameID) override;
 
     private:
         ada::url_search_params _params;
@@ -27,9 +27,9 @@ namespace fasturl {
 
         URLHostObject(ada::url_aggregator url) : _url(url){};
 
-        std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime &rt);
+        std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime &rt) override;
 
-        jsi::Value get(jsi::Runtime &rt, const jsi::PropNameID &propNameID);
+        jsi::Value get(jsi::Runtime &rt, const jsi::PropNameID &propNameID) override;
 
     private:
         ada::url_aggregator _url;
