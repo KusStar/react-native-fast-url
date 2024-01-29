@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from './Text';
+import { useColorTheme } from './useColorTheme';
 
 type ButtonProps = {
   title: string;
@@ -11,9 +12,18 @@ export const Button: React.FC<ButtonProps> = ({
   title,
   onPress,
 }: ButtonProps) => {
+  const theme = useColorTheme();
   return (
     <View>
-      <TouchableOpacity style={styles.container} onPress={onPress}>
+      <TouchableOpacity
+        style={[
+          styles.container,
+          {
+            borderColor: theme.colors.text,
+          },
+        ]}
+        onPress={onPress}
+      >
         <Text>{title}</Text>
       </TouchableOpacity>
     </View>

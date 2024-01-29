@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Checkbox from '@react-native-community/checkbox';
 import { Text } from './Text';
+import { useColorTheme } from './useColorTheme';
 
 type TestItemProps = {
   description: string;
@@ -16,10 +17,14 @@ export const TestItem: React.FC<TestItemProps> = ({
   index,
   onToggle,
 }: TestItemProps) => {
+  const theme = useColorTheme();
   return (
     <View style={styles.container}>
       <Text>{description}</Text>
       <Checkbox
+        tintColors={{
+          false: !theme.dark && theme.colors.text,
+        }}
         value={value}
         onValueChange={() => {
           onToggle(index);

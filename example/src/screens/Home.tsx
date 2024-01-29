@@ -7,6 +7,7 @@ import { TEST_LIST } from './Tests/testList';
 import { TestItem } from '../components/TestItem';
 import { Button } from '../components/Button';
 import type { RootStackParamList } from './params';
+import { useColorTheme } from '../components/useColorTheme';
 
 const useTests = (): [
   Array<TestItemType>,
@@ -49,12 +50,20 @@ const useTests = (): [
 };
 
 export function Home() {
+  const theme = useColorTheme();
   const [tests, toggle, clearAll, checkAll] = useTests();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList, 'Home'>>();
 
   return (
-    <View style={styles.mainContainer}>
+    <View
+      style={[
+        styles.mainContainer,
+        {
+          backgroundColor: theme.colors.background,
+        },
+      ]}
+    >
       <View style={styles.testList}>
         <ScrollView style={styles.scrollView}>
           {tests.map((test, index: number) => (
@@ -95,7 +104,7 @@ export function Home() {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    paddingBottom: 16,
   },
   testList: {
     flex: 9,

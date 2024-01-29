@@ -6,12 +6,14 @@ import { Home } from './screens/Home';
 import { Benchmarks } from './screens/Benchmarks/Benchmarks';
 import { Tests } from './screens/Tests/Tests';
 import type { RootStackParamList } from './screens/params';
+import { useColorTheme } from './components/useColorTheme';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+  const theme = useColorTheme();
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={theme}>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Benchmarks" component={Benchmarks} />
