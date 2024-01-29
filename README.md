@@ -17,7 +17,7 @@ Compared to [react-native-url-polyfill](https://github.com/charpeni/react-native
 
 Run on M1 Pro Mac Catalyst, React Native v0.72.7.
 
-|                           | loop 100        | loop 1000       | loop 10000      | loop 100000     |
+|                           | loop 100        | loop 1,000       | loop 10,000      | loop 100,000     |
 |---------------------------|------------|------------|------------|------------|
 | react-native-url-polyfill | 22ms       | 125ms      | 1225ms     | 12438ms    |
 | react-native-fast-url     | 2ms        | 4ms        | 35ms       | 361ms      |
