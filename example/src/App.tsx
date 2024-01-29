@@ -1,51 +1,22 @@
-/* eslint-disable prettier/prettier */
 import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
-import { startBench } from './bench';
+import { Home } from './screens/Home';
+import { Benchmarks } from './screens/Benchmarks/Benchmarks';
+import { Tests } from './screens/Tests/Tests';
+import type { RootStackParamList } from './screens/params';
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  const [result, setResult] = React.useState<{
-    b1: number;
-    b2: number;
-    loop: number;
-  }[]>();
-  React.useEffect(() => {
-    setTimeout(() => {
-      setResult(startBench());
-    }, 100)
-  }, []);
-
   return (
-    <View style={styles.container}>
-      {
-        result ? result.map((it, index) =>
-          <View key={index} style={{ marginBottom: 32 }}>
-            <Text>LOOP: {it.loop}</Text>
-            <Text>polyfill URL: {it.b1.toFixed(2)}ms</Text>
-            <Text>FastUrl: {it.b2.toFixed(2)}ms</Text>
-            <Text>FastUrl is {(it.b1 / it.b2).toFixed(2)}x faster</Text>
-          </View>
-        )
-          :
-          <View>
-            <ActivityIndicator size={64} />
-            <Text>Running benchmark...</Text>
-          </View>
-      }
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Benchmarks" component={Benchmarks} />
+        <Stack.Screen name="Tests" component={Tests} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-});
