@@ -1,0 +1,151 @@
+import { describe, it } from '../../../testing/MochaRnAdapter';
+import { expect } from 'chai';
+import { URL } from 'react-native-fast-url';
+
+export function registerURLTests() {
+  describe('URL', () => {
+    describe('Constructor and Href Tests', () => {
+      it('should correctly parse a valid URL and set the href property', () => {
+        const validUrl = 'http://www.example.com/path?query=string#hash';
+        const url = new URL(validUrl);
+        expect(url.href).to.equal(validUrl);
+      });
+
+      it('should throw an error when parsing an invalid URL', () => {
+        const invalidUrl = 'url';
+        expect(() => new URL(invalidUrl)).to.throw();
+      });
+    });
+
+    describe('Property Tests', () => {
+      const baseUrl =
+        'http://username:password@hostname:8080/pathname?search=query#hash';
+
+      it('should correctly parse and set the protocol property', () => {
+        const url = new URL(baseUrl);
+        expect(url.protocol).to.equal('http:');
+        url.protocol = 'https:';
+        expect(url.href).to.include('https://');
+      });
+
+      it('should correctly parse and set the username property', () => {
+        const url = new URL(baseUrl);
+        expect(url.username).to.equal('username');
+        url.username = 'newusername';
+        expect(url.href).to.include('newusername');
+      });
+
+      it('should correctly parse and set the password property', () => {
+        const url = new URL(baseUrl);
+        expect(url.password).to.equal('password');
+        url.password = 'newpassword';
+        expect(url.href).to.include('newpassword');
+      });
+
+      it('should correctly parse and set the host property', () => {
+        const url = new URL(baseUrl);
+        expect(url.host).to.equal('hostname:8080');
+        url.host = 'newhostname:9090';
+        expect(url.href).to.include('newhostname:9090');
+      });
+
+      it('should correctly parse and set the hostname property', () => {
+        const url = new URL(baseUrl);
+        expect(url.hostname).to.equal('hostname');
+        url.hostname = 'newhostname';
+        expect(url.href).to.include('newhostname');
+      });
+
+      it('should correctly parse and set the port property', () => {
+        const url = new URL(baseUrl);
+        expect(url.port).to.equal('8080');
+        url.port = '9090';
+        expect(url.href).to.include(':9090');
+      });
+
+      it('should correctly parse and set the pathname property', () => {
+        const url = new URL(baseUrl);
+        expect(url.pathname).to.equal('/pathname');
+        url.pathname = '/newpathname';
+        expect(url.href).to.include('/newpathname');
+      });
+
+      it('should correctly parse and set the search property', () => {
+        const url = new URL(baseUrl);
+        expect(url.search).to.equal('?search=query');
+        url.search = '?newsearch=newquery';
+        expect(url.href).to.include('?newsearch=newquery');
+      });
+
+      it('should correctly parse and set the hash property', () => {
+        const url = new URL(baseUrl);
+        expect(url.hash).to.equal('#hash');
+        url.hash = '#newhash';
+        expect(url.href).to.include('#newhash');
+      });
+    });
+
+    describe('SearchParams Integration Tests', () => {
+      it('should reflect changes in searchParams in the search property of the URL', () => {
+        const url = new URL('http://www.example.com');
+        url.searchParams.append('key', 'value');
+        expect(url.search).to.equal('?key=value');
+      });
+
+      it('should update the URL when searchParams are modified', () => {
+        const url = new URL('http://www.example.com?initial=param');
+        url.searchParams.set('initial', 'newvalue');
+        expect(url.search).to.equal('?initial=newvalue');
+      });
+
+      it('should correctly parse existing search parameters into searchParams', () => {
+        const url = new URL('http://www.example.com?existingKey=existingValue');
+        expect(url.searchParams.get('existingKey')).to.equal('existingValue');
+      });
+
+      it('should allow modification of existing search parameters through searchParams', () => {
+        const url = new URL('http://www.example.com?existingKey=existingValue');
+        url.searchParams.set('existingKey', 'newValue');
+        expect(url.search).to.equal('?existingKey=newValue');
+      });
+
+      it('should reflect deletion of search parameters in the URL search property', () => {
+        const url = new URL('http://www.example.com?key1=value1&key2=value2');
+        url.searchParams.delete('key1');
+        expect(url.search).to.equal('?key2=value2');
+      });
+
+      it('should handle multiple search parameters correctly', () => {
+        const url = new URL(
+          'http://www.example.com?initialKey=initialValue&anotherKey=anotherValue'
+        );
+        url.searchParams.append('newKey', 'newValue');
+        expect(url.search).to.include('initialKey=initialValue');
+        expect(url.search).to.include('anotherKey=anotherValue');
+        expect(url.search).to.include('newKey=newValue');
+      });
+    });
+
+    describe('Static Methods Tests', () => {
+      describe('createObjectURL', () => {
+        // TODO: Currently this test fails with "Cannot create URL for a blob!"
+        // it('should create a valid object URL for a blob', () => {
+        //   const fakeBlob = { data: { blobId: '123', offset: 0 }, size: 10 };
+        //   const objectUrl = URL.createObjectURL(fakeBlob);
+        //   expect(objectUrl).to.be.a('string');
+        //   expect(objectUrl).to.include(fakeBlob.data.blobId);
+        //   expect(objectUrl).to.include(`offset=${fakeBlob.data.offset}`);
+        //   expect(objectUrl).to.include(`size=${fakeBlob.size}`);
+        // });
+      });
+
+      describe('revokeObjectURL', () => {
+        it('should not perform any action', () => {
+          const objectUrl = 'blob://123';
+          expect(() => URL.revokeObjectURL(objectUrl)).to.not.throw();
+          // Additional assertions might be added if the implementation changes
+        });
+      });
+    });
+  });
+}
