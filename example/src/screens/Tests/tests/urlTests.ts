@@ -15,18 +15,30 @@ export function registerURLTests() {
         const invalidUrl = 'url';
         expect(() => new URL(invalidUrl)).to.throw();
       });
+
+      it('should correctly parse URLs with different schemes', () => {
+        const httpsUrl = new URL('https://www.example.com');
+        expect(httpsUrl.protocol).to.equal('https:');
+        const ftpUrl = new URL('ftp://www.example.com');
+        expect(ftpUrl.protocol).to.equal('ftp:');
+      });
+
+      it('should handle URLs with trailing slashes', () => {
+        const urlWithTrailingSlash = new URL('http://www.example.com/');
+        expect(urlWithTrailingSlash.pathname).to.equal('/');
+      });
+
+      it('should throw an error when constructing with an invalid URL', () => {
+        const invalidUrls = ['invalid___', '://badurl', 'http://:80'];
+        invalidUrls.forEach((invalidUrl) => {
+          expect(() => new URL(invalidUrl)).to.throw();
+        });
+      });
     });
 
     describe('Property Tests', () => {
       const baseUrl =
         'http://username:password@hostname:8080/pathname?search=query#hash';
-
-      it('should correctly parse and set the protocol property', () => {
-        const url = new URL(baseUrl);
-        expect(url.protocol).to.equal('http:');
-        url.protocol = 'https:';
-        expect(url.href).to.include('https://');
-      });
 
       it('should correctly parse and set the username property', () => {
         const url = new URL(baseUrl);
@@ -56,32 +68,91 @@ export function registerURLTests() {
         expect(url.href).to.include('newhostname');
       });
 
-      it('should correctly parse and set the port property', () => {
-        const url = new URL(baseUrl);
-        expect(url.port).to.equal('8080');
-        url.port = '9090';
-        expect(url.href).to.include(':9090');
+      describe('Protocol property tests', () => {
+        it('should correctly parse and set the protocol property', () => {
+          const url = new URL(baseUrl);
+          expect(url.protocol).to.equal('http:');
+          url.protocol = 'https:';
+          expect(url.href).to.include('https://');
+        });
+
+        it('should keep the same protocol if an invalid one is set', () => {
+          const url = new URL(baseUrl);
+          expect(url.protocol).to.equal('http:');
+          url.protocol = ' invalid';
+          expect(url.protocol).to.include('http:');
+          expect(url.href).to.include('http://');
+        });
       });
 
-      it('should correctly parse and set the pathname property', () => {
-        const url = new URL(baseUrl);
-        expect(url.pathname).to.equal('/pathname');
-        url.pathname = '/newpathname';
-        expect(url.href).to.include('/newpathname');
+      describe('Port property tests', () => {
+        it('should correctly parse and set the port property', () => {
+          const url = new URL(baseUrl);
+          expect(url.port).to.equal('8080');
+          url.port = '9090';
+          expect(url.href).to.include(':9090');
+        });
+
+        it('does not allow setting to an invalid port', () => {
+          const url = new URL('http://www.example.com');
+          url.port = '-1';
+
+          expect(url.port).to.equal('');
+        });
       });
 
-      it('should correctly parse and set the search property', () => {
-        const url = new URL(baseUrl);
-        expect(url.search).to.equal('?search=query');
-        url.search = '?newsearch=newquery';
-        expect(url.href).to.include('?newsearch=newquery');
+      describe('Pathname property tests', () => {
+        it('should correctly parse and set the pathname property', () => {
+          const url = new URL(baseUrl);
+          expect(url.pathname).to.equal('/pathname');
+          url.pathname = '/newpathname';
+          expect(url.href).to.include('/newpathname');
+        });
+
+        it('should handle setting an empty pathname', () => {
+          const url = new URL(baseUrl);
+          url.pathname = '';
+          expect(url.href).to.equal(
+            'http://username:password@hostname:8080/?search=query#hash'
+          );
+        });
       });
 
-      it('should correctly parse and set the hash property', () => {
-        const url = new URL(baseUrl);
-        expect(url.hash).to.equal('#hash');
-        url.hash = '#newhash';
-        expect(url.href).to.include('#newhash');
+      describe('Search property tests', () => {
+        it('should correctly parse and set the search property', () => {
+          const url = new URL(baseUrl);
+          expect(url.search).to.equal('?search=query');
+          url.search = '?newsearch=newquery';
+          expect(url.href).to.include('?newsearch=newquery');
+        });
+
+        it('should handle setting an empty search', () => {
+          const url = new URL(baseUrl);
+          url.search = '';
+          expect(url.href).to.not.include('?');
+        });
+
+        it('does not allow setting to an invalid search', () => {
+          const url = new URL('http://www.example.com');
+          url.protocol = ' invalid';
+
+          expect(url.protocol).to.equal('http:');
+        });
+      });
+
+      describe('Hash property tests', () => {
+        it('should correctly parse and set the hash property', () => {
+          const url = new URL(baseUrl);
+          expect(url.hash).to.equal('#hash');
+          url.hash = '#newhash';
+          expect(url.href).to.include('#newhash');
+        });
+
+        it('should handle setting an empty hash', () => {
+          const url = new URL(baseUrl);
+          url.hash = '';
+          expect(url.href).to.not.include('#');
+        });
       });
     });
 
@@ -176,29 +247,6 @@ export function registerURLTests() {
           const objectUrl = 'blob://123';
           expect(() => URL.revokeObjectURL(objectUrl)).to.not.throw();
         });
-      });
-    });
-
-    describe('Invalid input tests', () => {
-      it('should throw an error when constructing with an invalid URL', () => {
-        const invalidUrls = ['invalid___', '://badurl', 'http://:80'];
-        invalidUrls.forEach((invalidUrl) => {
-          expect(() => new URL(invalidUrl)).to.throw();
-        });
-      });
-
-      it('does not allow setting to an invalid port', () => {
-        const url = new URL('http://www.example.com');
-        url.port = '-1';
-
-        expect(url.port).to.equal('');
-      });
-
-      it('does not allow setting to an invalid search', () => {
-        const url = new URL('http://www.example.com');
-        url.protocol = ' invalid';
-
-        expect(url.protocol).to.equal('http:');
       });
     });
   });
