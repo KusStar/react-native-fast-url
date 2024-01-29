@@ -140,6 +140,7 @@ export class URLSearchParams {
 
 export class URL {
   private _url: ReturnType<FastUrlNative['URL']>;
+  private _searchParams: URLSearchParams;
 
   static createObjectURL(blob: any) {
     if (BLOB_URL_PREFIX === null) {
@@ -154,9 +155,26 @@ export class URL {
 
   constructor(url: string) {
     this._url = FastUrlModule.URL(url);
+    this._searchParams = new URLSearchParams(this._url.search);
+  }
+
+  // URL is updated lazily to greatly improve performance when URLSearchParams is updated repeatedly.
+  // If URLSearchParams has been modified, reflect that back into URL, without cascading back.
+  // See https://github.com/nodejs/node/blob/64c6d97463c29bade4d6081683dab2cd7cda298d/lib/internal/url.js#L847
+  private ensureSearchParamsUpdated() {
+    this._url.search = this.convertSearchParamsToSearchString();
+  }
+
+  // See https://github.com/nodejs/node/blob/64c6d97463c29bade4d6081683dab2cd7cda298d/lib/internal/url.js#L842
+  private convertSearchParamsToSearchString() {
+    if (this._searchParams.size === 0) {
+      return '';
+    }
+    return `?${this._searchParams.toString()}`;
   }
 
   get href() {
+    this.ensureSearchParamsUpdated();
     return this._url.href;
   }
 
@@ -226,15 +244,17 @@ export class URL {
   }
 
   get search() {
+    this.ensureSearchParamsUpdated();
     return this._url.search;
   }
 
   set search(value: string) {
+    this._searchParams = new URLSearchParams(value);
     this._url.search = value;
   }
 
   get searchParams() {
-    return new URLSearchParams(this._url.search);
+    return this._searchParams;
   }
 
   get hash() {
@@ -246,10 +266,12 @@ export class URL {
   }
 
   toString() {
-    return this._url.toString();
+    this.ensureSearchParamsUpdated();
+    return this._url.href;
   }
 
   toJSON() {
+    this.ensureSearchParamsUpdated();
     return this._url.href;
   }
 }

@@ -130,6 +130,7 @@ namespace fasturl
                 {
                     return jsi::Value::null();
                 }
+
                 std::string key = args[0].asString(rt).utf8(rt);
                 auto result = _params.get(key);
                 if (result.has_value())
@@ -253,7 +254,7 @@ namespace fasturl
         std::vector<jsi::PropNameID> keys;
         const char *names[] = {"href", "origin", "protocol", "username",
                                "password", "host", "hostname", "port",
-                               "pathname", "search", "hash", "toString"};
+                               "pathname", "search", "hash"};
         for (const auto &name : names)
         {
             keys.push_back(jsi::PropNameID::forAscii(rt, name));
@@ -308,11 +309,6 @@ namespace fasturl
         if (key == "hash")
         {
             return HOST_STR(std::string(_url.get_hash()));
-        }
-        if (key == "toString")
-        {
-            return HOST_FN(rt, "toString", 0,
-                           { return HOST_STR(std::string(_url.to_string())); });
         }
         return jsi::Value::null();
     } // namespace fasturl

@@ -86,21 +86,33 @@ export function registerURLTests() {
     });
 
     describe('SearchParams Integration Tests', () => {
-      it('should reflect changes in searchParams in the search property of the URL', () => {
+      it('should correctly parse existing search parameters into searchParams', () => {
+        const url = new URL('http://www.example.com?existingKey=existingValue');
+        expect(url.searchParams.get('existingKey')).to.equal('existingValue');
+      });
+
+      it('should correctly update searchParams if url.search is set', () => {
+        const url = new URL('http://www.example.com?existingKey=existingValue');
+        url.search = '?test=newValue';
+        expect(url.searchParams.size).to.equal(1);
+        expect(url.searchParams.get('test')).to.equal('newValue');
+      });
+
+      it('should reflect changes in searchParams in the relevant properties of the URL', () => {
         const url = new URL('http://www.example.com');
         url.searchParams.append('key', 'value');
+
+        // Ensure that each method is updated properky
         expect(url.search).to.equal('?key=value');
+        expect(url.href).to.equal('http://www.example.com/?key=value');
+        expect(url.toString()).to.equal('http://www.example.com/?key=value');
+        expect(url.toJSON()).to.equal('http://www.example.com/?key=value');
       });
 
       it('should update the URL when searchParams are modified', () => {
         const url = new URL('http://www.example.com?initial=param');
         url.searchParams.set('initial', 'newvalue');
         expect(url.search).to.equal('?initial=newvalue');
-      });
-
-      it('should correctly parse existing search parameters into searchParams', () => {
-        const url = new URL('http://www.example.com?existingKey=existingValue');
-        expect(url.searchParams.get('existingKey')).to.equal('existingValue');
       });
 
       it('should allow modification of existing search parameters through searchParams', () => {
@@ -126,6 +138,20 @@ export function registerURLTests() {
       });
     });
 
+    describe('ToString and ToJSON Tests', () => {
+      const exampleUrl = 'http://www.example.com/path?query=string#hash';
+
+      it('should return the full URL string using toString', () => {
+        const url = new URL(exampleUrl);
+        expect(url.toString()).to.equal(exampleUrl);
+      });
+
+      it('should return the full URL string using toJSON', () => {
+        const url = new URL(exampleUrl);
+        expect(url.toJSON()).to.equal(exampleUrl);
+      });
+    });
+
     describe('Static Methods Tests', () => {
       describe('createObjectURL', () => {
         // TODO: Currently this test fails with "Cannot create URL for a blob!"
@@ -143,7 +169,6 @@ export function registerURLTests() {
         it('should not perform any action', () => {
           const objectUrl = 'blob://123';
           expect(() => URL.revokeObjectURL(objectUrl)).to.not.throw();
-          // Additional assertions might be added if the implementation changes
         });
       });
     });

@@ -110,8 +110,6 @@ export function registerURLSearchParamsTests() {
           result.push([key, value]);
         });
 
-        console.log({ result });
-
         expect(result).to.deep.equal([
           ['key1', 'value1'],
           ['key2', 'value2'],
