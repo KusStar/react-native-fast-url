@@ -142,6 +142,31 @@ export class URL {
   private _url: ReturnType<FastUrlNative['URL']>;
   private _searchParams: URLSearchParams;
 
+  /**
+   * To allow Blobs be accessed via `content://` URIs,
+   * you need to register `BlobProvider` as a ContentProvider in your app's `AndroidManifest.xml`:
+   *
+   * ```xml
+   * <manifest>
+   *   <application>
+   *     <provider
+   *       android:name="com.facebook.react.modules.blob.BlobProvider"
+   *       android:authorities="@string/blob_provider_authority"
+   *       android:exported="false"
+   *     />
+   *   </application>
+   * </manifest>
+   * ```
+   * And then define the `blob_provider_authority` string in `res/values/strings.xml`.
+   * Use a dotted name that's entirely unique to your app:
+   *
+   * ```xml
+   * <resources>
+   *   <string name="blob_provider_authority">your.app.package.blobs</string>
+   * </resources>
+   * ```
+   * see https://github.com/facebook/react-native/blob/cfc0ba04a1fa147517e94d1f952e2a8fe62e6e9c/packages/react-native/Libraries/Blob/URL.js#L30-L53
+   */
   static createObjectURL(blob: any) {
     if (BLOB_URL_PREFIX === null) {
       throw new Error('Cannot create URL for blob!');
