@@ -98,6 +98,12 @@ export function registerURLTests() {
         expect(url.searchParams.get('test')).to.equal('newValue');
       });
 
+      it('should update searchParams if href is set', () => {
+        const url = new URL('http://www.example.com?existingKey=existingValue');
+        url.href = 'http://www.example.com';
+        expect(url.searchParams.size).to.equal(0);
+      });
+
       it('should reflect changes in searchParams in the relevant properties of the URL', () => {
         const url = new URL('http://www.example.com');
         url.searchParams.append('key', 'value');
@@ -170,6 +176,29 @@ export function registerURLTests() {
           const objectUrl = 'blob://123';
           expect(() => URL.revokeObjectURL(objectUrl)).to.not.throw();
         });
+      });
+    });
+
+    describe('Invalid input tests', () => {
+      it('should throw an error when constructing with an invalid URL', () => {
+        const invalidUrls = ['invalid___', '://badurl', 'http://:80'];
+        invalidUrls.forEach((invalidUrl) => {
+          expect(() => new URL(invalidUrl)).to.throw();
+        });
+      });
+
+      it('does not allow setting to an invalid port', () => {
+        const url = new URL('http://www.example.com');
+        url.port = '-1';
+
+        expect(url.port).to.equal('');
+      });
+
+      it('does not allow setting to an invalid search', () => {
+        const url = new URL('http://www.example.com');
+        url.protocol = ' invalid';
+
+        expect(url.protocol).to.equal('http:');
       });
     });
   });

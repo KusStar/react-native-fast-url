@@ -5,12 +5,12 @@ import { type TestItemType } from './types';
 export const TEST_LIST: Array<TestItemType> = [
   {
     description: 'URL tests',
-    value: true,
+    value: false,
     registrator: registerURLTests,
   },
   {
     description: 'URLSearchParams tests',
-    value: true,
+    value: false,
     registrator: registerURLSearchParamsTests,
   },
 ];

@@ -180,6 +180,7 @@ export class URL {
 
   set href(value: string) {
     this._url.href = value;
+    this._searchParams = new URLSearchParams(this._url.search);
   }
 
   // Note: The 'origin' property is read-only, so no setter is provided.
