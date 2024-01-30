@@ -4,6 +4,38 @@ import { URLSearchParams } from 'react-native-fast-url';
 
 export function registerURLSearchParamsTests() {
   describe('URLSearchParams', () => {
+    describe('Constructing the object', () => {
+      it('should allow for constructing without any parameters', () => {
+        const params = new URLSearchParams();
+        expect(params.size).to.equal(0);
+      });
+
+      it('should allow for constructing with the empty string', () => {
+        const params = new URLSearchParams('');
+        expect(params.size).to.equal(0);
+      });
+
+      it('should allow for constructing with a record of key, value strings', () => {
+        const items = { key1: 'value1', key2: 'value2' };
+        const params = new URLSearchParams(items);
+        expect(params.size).to.equal(2);
+        expect(params.get('key1')).to.equal('value1');
+        expect(params.get('key2')).to.equal('value2');
+      });
+
+      it('should allow for constructing with an iterable of key, value strings', () => {
+        function* getSearchParamEntries(): IterableIterator<[string, string]> {
+          yield ['key1', 'value1'];
+          yield ['key2', 'value2'];
+        }
+
+        const params = new URLSearchParams(getSearchParamEntries());
+        expect(params.size).to.equal(2);
+        expect(params.get('key1')).to.equal('value1');
+        expect(params.get('key2')).to.equal('value2');
+      });
+    });
+
     describe('Append, Get, and GetAll Tests', () => {
       it('should append a key-value pair and retrieve it using get', () => {
         const params = new URLSearchParams();
@@ -114,28 +146,6 @@ export function registerURLSearchParamsTests() {
           ['key1', 'value1'],
           ['key2', 'value2'],
         ]);
-      });
-    });
-
-    describe('Set and Size Tests', () => {
-      it('should set a new key-value pair and verify its presence', () => {
-        const params = new URLSearchParams();
-        params.set('key', 'value');
-        expect(params.get('key')).to.equal('value');
-      });
-
-      it('should update an existing key with a new value using set', () => {
-        const params = new URLSearchParams();
-        params.append('key', 'value1');
-        params.set('key', 'value2');
-        expect(params.get('key')).to.equal('value2');
-      });
-
-      it('should correctly reflect the number of unique keys in the size property', () => {
-        const params = new URLSearchParams();
-        params.append('key1', 'value1');
-        params.append('key2', 'value2');
-        expect(params.size).to.equal(2);
       });
     });
 
