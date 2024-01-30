@@ -81,8 +81,49 @@ const FastUrlModule: FastUrlNative = {
 export class URLSearchParams {
   private _urlSearchParams: ReturnType<FastUrlNative['URLSearchParams']>;
 
-  constructor(url?: string) {
-    this._urlSearchParams = FastUrlModule.URLSearchParams(url ?? '');
+  /**
+   * URLSearchParams accepts a variety of different input types:
+   *
+   * - A string, which will be parsed from application/x-www-form-urlencoded format. A leading '?' character is ignored.
+   * - A literal sequence of name-value string pairs, or any object — such as a FormData object — with an iterator that
+   *   produces a sequence of string pairs. Note that File entries will be serialized as [object File] rather than as
+   *   their filename (as they would in an application/x-www-form-urlencoded form).
+   * - A record of string keys and string values. Note that nesting is not supported.
+   *
+   * See https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams/URLSearchParams
+   */
+  constructor(
+    init:
+      | string
+      | Record<string, string>
+      | IterableIterator<[string, string]> = ''
+  ) {
+    if (typeof init === 'string') {
+      // If it's a string, pass it directly to the underlying implementation.
+      this._urlSearchParams = FastUrlModule.URLSearchParams(init);
+    } else if (
+      (typeof init === 'object' || typeof init === 'function') &&
+      typeof (init as any)[Symbol.iterator] === 'function'
+    ) {
+      // IterableIterator<[string, string]>
+      this._urlSearchParams = FastUrlModule.URLSearchParams('');
+
+      for (const pair of init as IterableIterator<[string, string]>) {
+        if (pair.length !== 2) {
+          throw new TypeError('Invalid tuple passed into URLSearchParams');
+        }
+
+        this._urlSearchParams.append(pair[0], pair[1]);
+      }
+    } else if (typeof init === 'object') {
+      // Record<string, string>
+      this._urlSearchParams = FastUrlModule.URLSearchParams('');
+      for (const [key, value] of Object.entries(init)) {
+        this._urlSearchParams.append(key, value);
+      }
+    } else {
+      throw new Error('Invalid input passed into URLSearchParams');
+    }
   }
 
   append(key: string, value: string) {
