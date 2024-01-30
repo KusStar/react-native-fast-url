@@ -101,24 +101,25 @@ export class URLSearchParams {
     if (typeof init === 'string') {
       // If it's a string, pass it directly to the underlying implementation.
       this._urlSearchParams = FastUrlModule.URLSearchParams(init);
-    } else if (typeof init === 'object' || typeof init === 'function') {
+    } else if (
+      (typeof init === 'object' || typeof init === 'function') &&
+      typeof (init as any)[Symbol.iterator] === 'function'
+    ) {
       // IterableIterator<[string, string]>
-      if (typeof (init as any)[Symbol.iterator] === 'function') {
-        this._urlSearchParams = FastUrlModule.URLSearchParams('');
+      this._urlSearchParams = FastUrlModule.URLSearchParams('');
 
-        for (const pair of init as IterableIterator<[string, string]>) {
-          if (pair.length !== 2) {
-            throw new TypeError('Invalid tuple passed into URLSearchParams');
-          }
+      for (const pair of init as IterableIterator<[string, string]>) {
+        if (pair.length !== 2) {
+          throw new TypeError('Invalid tuple passed into URLSearchParams');
+        }
 
-          this._urlSearchParams.append(pair[0], pair[1]);
-        }
-      } else {
-        // Record<string, string>
-        this._urlSearchParams = FastUrlModule.URLSearchParams('');
-        for (const [key, value] of Object.entries(init)) {
-          this._urlSearchParams.append(key, value);
-        }
+        this._urlSearchParams.append(pair[0], pair[1]);
+      }
+    } else if (typeof init === 'object') {
+      // Record<string, string>
+      this._urlSearchParams = FastUrlModule.URLSearchParams('');
+      for (const [key, value] of Object.entries(init)) {
+        this._urlSearchParams.append(key, value);
       }
     } else {
       throw new Error('Invalid input passed into URLSearchParams');

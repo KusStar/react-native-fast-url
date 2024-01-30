@@ -34,6 +34,11 @@ export function registerURLSearchParamsTests() {
         expect(params.get('key1')).to.equal('value1');
         expect(params.get('key2')).to.equal('value2');
       });
+
+      it('should throw for invalid input', () => {
+        // @ts-expect-error
+        expect(() => new URLSearchParams([1])).to.throw();
+      });
     });
 
     describe('Append, Get, and GetAll Tests', () => {
