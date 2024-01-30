@@ -36,6 +36,35 @@ export function registerURLTests() {
       });
     });
 
+    describe('URL Constructor with Base Parameter Tests', () => {
+      it('should correctly resolve a relative URL against a base URL', () => {
+        const baseUrl = 'http://www.example.com/base/';
+        const relativeUrl = 'path/page.html';
+        const url = new URL(relativeUrl, baseUrl);
+        expect(url.href).to.equal('http://www.example.com/base/path/page.html');
+      });
+
+      it('should handle a relative URL with a leading slash against a base URL', () => {
+        const baseUrl = 'http://www.example.com/base/';
+        const relativeUrl = '/path/page.html';
+        const url = new URL(relativeUrl, baseUrl);
+        expect(url.href).to.equal('http://www.example.com/path/page.html');
+      });
+
+      it('should throw an error when resolving a relative URL against an invalid base URL', () => {
+        const invalidBaseUrl = 'invalid_base';
+        const relativeUrl = 'path/page.html';
+        expect(() => new URL(relativeUrl, invalidBaseUrl)).to.throw();
+      });
+
+      it('should handle an absolute URL regardless of the base URL', () => {
+        const baseUrl = 'http://www.example.com/base/';
+        const absoluteUrl = 'https://www.another.com/page.html';
+        const url = new URL(absoluteUrl, baseUrl);
+        expect(url.href).to.equal(absoluteUrl);
+      });
+    });
+
     describe('Property Tests', () => {
       const baseUrl =
         'http://username:password@hostname:8080/pathname?search=query#hash';

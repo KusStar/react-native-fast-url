@@ -57,7 +57,10 @@ type FastUrlNative = {
     values: () => IterableIterator<string>;
     toStirng(): () => string;
   };
-  URL: (url: string) => {
+  URL: (
+    url: string,
+    base?: string
+  ) => {
     href: string;
     origin: string;
     protocol: string;
@@ -178,8 +181,8 @@ export class URL {
     // Do nothing.
   }
 
-  constructor(url: string) {
-    this._url = FastUrlModule.URL(url);
+  constructor(url: string, base?: string) {
+    this._url = FastUrlModule.URL(url, base);
     this._searchParams = new URLSearchParams(this._url.search);
   }
 
