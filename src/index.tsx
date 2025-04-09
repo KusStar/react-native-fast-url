@@ -99,6 +99,7 @@ export class URLSearchParams {
     init:
       | string
       | Record<string, string>
+      | URLSearchParams
       | IterableIterator<[string, string]> = ''
   ) {
     if (typeof init === 'string') {
@@ -139,6 +140,10 @@ export class URLSearchParams {
 
   entries() {
     return this._urlSearchParams.entries();
+  }
+
+  [Symbol.iterator]() {
+    return this.entries()[Symbol.iterator]();
   }
 
   forEach(callback: (value: string, key: string) => void) {

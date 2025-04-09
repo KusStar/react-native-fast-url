@@ -5,6 +5,23 @@ import { URLSearchParams } from 'react-native-fast-url';
 export function registerURLSearchParamsTests() {
   describe('URLSearchParams', () => {
     describe('Constructing the object', () => {
+      it('UrlSearchParams instance should be iterable', () => {
+        const params = new URLSearchParams();
+        params.append('a', '1');
+        for (const [key, value] of params) {
+          expect(key).to.equal('a');
+          expect(value).to.equal('1');
+        }
+        params.append('b', '2');
+        expect(params.size).to.equal(2);
+      });
+      it('should allow for constructing UrlSearchParams with UrlSearchParams', () => {
+        const params = new URLSearchParams();
+        params.append('a', '1');
+        const params2 = new URLSearchParams(params);
+        params2.append('b', '2');
+        expect(params2.size).to.equal(2);
+      });
       it('should allow for constructing without any parameters', () => {
         const params = new URLSearchParams();
         expect(params.size).to.equal(0);
