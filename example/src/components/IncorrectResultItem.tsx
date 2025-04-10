@@ -16,7 +16,7 @@ export const IncorrectResultItem: React.FC<IncorrectResultItemProps> = ({
 
   return (
     <View style={styles.itemContainer}>
-      <Text style={[styles.text]}>{fullText}</Text>
+      <Text style={styles.text}>{fullText}</Text>
     </View>
   );
 };

@@ -12,7 +12,7 @@ export const Suite: React.FC<SuiteProps> = ({ description }: SuiteProps) => {
 
   return (
     <View style={styles.itemContainer}>
-      <Text style={[styles.text]}>{fullText}</Text>
+      <Text style={styles.text}>{fullText}</Text>
     </View>
   );
 };

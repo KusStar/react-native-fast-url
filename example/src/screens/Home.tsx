@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   testList: {
-    flex: 9,
+    flex: 1,
   },
   menu: {
     flex: 1,
