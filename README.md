@@ -4,6 +4,8 @@ A Fast URL and URLSearchParams Polyfills for React Native.
 
 Built in JSI and [ada](https://github.com/ada-url/ada), a WHATWG-compliant and fast URL parser adopted in Node.js since v18.16 for the best performance.
 
+Tested on RN 0.76, but still **not support new architecture**, so you need to turn off new architecture in `android/gradle.properties` and `ios/Podfile`(or use RCT_NEW_ARCH_ENABLED=0).
+
 ## Installation
 
 ```sh
