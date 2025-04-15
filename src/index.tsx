@@ -166,7 +166,8 @@ export class URLSearchParams {
     return this._urlSearchParams.keys();
   }
 
-  set(key: string, value: string) {
+  set(key: string, value: string | string[]) {
+    if (Array.isArray(value)) value = value.join(',');
     return this._urlSearchParams.set(key, value);
   }
 
