@@ -138,6 +138,12 @@ export function registerURLSearchParamsTests() {
         expect(params.get('key')).to.equal('value');
       });
 
+      it('should support passing array of strings as a value', () => {
+        const params = new URLSearchParams();
+        params.set('key', ['value1', 'value2']);
+        expect(params.get('key')).to.equal('value1,value2');
+      });
+
       it('should update an existing key with a new value using set', () => {
         const params = new URLSearchParams();
         params.append('key', 'value1');
