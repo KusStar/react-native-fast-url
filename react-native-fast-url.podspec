@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
   s.platforms    = { :ios => "13.4" }
-  s.source       = { :git => "https://github.com/mrousavy/react-native-fast-url.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/KusStar/react-native-fast-url.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm}", "cpp/**/*.{h,cpp}"
   s.requires_arc = true

@@ -33,7 +33,6 @@ const FastUrl = NativeModules.FastUrl
     );
 
 if (global.__FastUrl == null) {
-  console.log('FastUrl', FastUrl);
   const installed = FastUrl.install();
 
   if (installed) {
