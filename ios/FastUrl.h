@@ -8,8 +8,9 @@
 @interface FastUrl : NSObject <NativeFastUrlSpec>
 #else
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 
-@interface FastUrl : NSObject <RCTBridgeModule>
+@interface FastUrl : RCTEventEmitter <RCTBridgeModule>
 #endif
 
 @end
