@@ -80,7 +80,8 @@
     "react-native": "*"
   },
   "workspaces": [
-    "example"
+    "example",
+    "example80"
   ],
   "packageManager": "yarn@3.6.1",
   "engines": {
