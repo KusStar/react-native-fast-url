@@ -4,7 +4,7 @@ A Fast URL and URLSearchParams Polyfills for React Native.
 
 Built in JSI and [ada](https://github.com/ada-url/ada), a WHATWG-compliant and fast URL parser adopted in Node.js since v18.16 for the best performance.
 
-Tested on RN 0.76, **new architecture** supported(https://github.com/KusStar/react-native-fast-url/pull/9). Thanks to [https://github.com/Doublemme](https://github.com/Doublemme) for the contribution.
+Tested on RN [0.76](https://github.com/KusStar/react-native-fast-url/tree/main/example), [0.80](https://github.com/KusStar/react-native-fast-url/tree/main/example80), **new architecture** supported(https://github.com/KusStar/react-native-fast-url/pull/9). Thanks to [https://github.com/Doublemme](https://github.com/Doublemme) for the contribution.
 
 The legecy branch is still available in the [legacy](https://github.com/KusStar/react-native-fast-url/tree/legacy) branch.
 
