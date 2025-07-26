@@ -118,6 +118,14 @@ repositories {
   google()
 }
 
+// Only configure react block when new architecture is enabled
+if (isNewArchitectureEnabled()) {
+  react {
+      jsRootDir = file("../src/")
+      libraryName = "FastUrl"
+      codegenJavaPackageName = "com.fasturl"
+  }
+}
 
 dependencies {
   // For < 0.71, this will be from the local maven repo
