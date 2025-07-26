@@ -1,6 +1,6 @@
 {
   "name": "react-native-fast-url",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "Fast URL for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
