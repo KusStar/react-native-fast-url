@@ -353,8 +353,19 @@ export class URL {
 }
 
 export function setupPolyfill() {
-  (globalThis as any).URL = URL;
-  (globalThis as any).URLSearchParams = URLSearchParams;
+  Object.defineProperty(globalThis, 'URL', {
+    value: URL,
+    writable: true,
+    enumerable: true,
+    configurable: false,
+  });
+
+  Object.defineProperty(globalThis, 'URLSearchParams', {
+    value: URLSearchParams,
+    writable: true,
+    enumerable: true,
+    configurable: false,
+  });
 }
 
 export default FastUrlModule;
